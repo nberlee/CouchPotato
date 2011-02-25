@@ -104,6 +104,9 @@ class Library:
             if movie['folder'] == 'VIDEO_TS':
                 movie['folder'] = movie['path'].split(os.path.sep)[-2:-1].pop()
 
+            if movie['folder'] == 'BDMV':
+                movie['folder'] = movie['path'].split(os.path.sep)[-2:-1].pop()
+
             patterns = []
             for extType in self.extensions.itervalues():
                 patterns.extend(extType)
