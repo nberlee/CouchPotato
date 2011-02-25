@@ -16,6 +16,7 @@ class nzbMatrix(nzbBase):
     searchUrl = 'http://rss.nzbmatrix.com/rss.php'
 
     catIds = {
+        50: ['bluray'],
         42: ['720p', '1080p'],
         2: ['cam', 'ts', 'dvdrip', 'tc', 'r5', 'scr'],
         54: ['brrip'],
