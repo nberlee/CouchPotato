@@ -104,8 +104,10 @@ class Library:
             if movie['folder'] == 'VIDEO_TS':
                 movie['folder'] = movie['path'].split(os.path.sep)[-2:-1].pop()
 
-            if movie['folder'] == 'BDMV':
-                movie['folder'] = movie['path'].split(os.path.sep)[-2:-1].pop()
+            if movie['folder'] == 'STREAM':
+                if movie['path'].split(os.path.sep)[-2:-1].pop() == 'BDMV':
+                    movie['folder'] = movie['path'].split(os.path.sep)[-3:-2].pop()
+                    movie['info']['quality'] = 'bluray'
 
             patterns = []
             for extType in self.extensions.itervalues():
@@ -174,10 +176,11 @@ class Library:
 
                     movie['info']['name'] = movie['movie'].name
                     movie['info']['year'] = movie['movie'].year
-                    try:
-                        movie['info']['quality'] = qualities.types.get(movie['queue'].qualityType).get('label')
-                    except:
-                        movie['info']['quality'] = qualities.guess([os.path.join(movie['path'], file['filename']) for file in movie['files']])
+                    if movie['info']['quality'] == '':
+                        try:
+                            movie['info']['quality'] = qualities.types.get(movie['queue'].qualityType).get('label')
+                        except:
+                            movie['info']['quality'] = qualities.guess([os.path.join(movie['path'], file['filename']) for file in movie['files']])
 
                     for file in movie['files']:
                         movie['info']['size'] += file['size']
