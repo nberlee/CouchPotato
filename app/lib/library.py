@@ -103,11 +103,12 @@ class Library:
 
             if movie['folder'] == 'VIDEO_TS':
                 movie['folder'] = movie['path'].split(os.path.sep)[-2:-1].pop()
+                movie['info']['quality'] = 'dvdr'
 
-            if movie['folder'] == 'STREAM':
-                if movie['path'].split(os.path.sep)[-2:-1].pop() == 'BDMV':
-                    movie['folder'] = movie['path'].split(os.path.sep)[-3:-2].pop()
-                    movie['info']['quality'] = 'bluray'
+            if movie['folder'] == 'STREAM' and movie['path'].split(os.path.sep)[-2:-1].pop() == 'BDMV':
+                movie['folder'] = movie['path'].split(os.path.sep)[-3:-2].pop()
+                movie['info']['quality'] = 'bluray'
+                movie['info']['sourcemedia'] = 'bluray'
 
             patterns = []
             for extType in self.extensions.itervalues():
@@ -216,7 +217,8 @@ class Library:
                             namedResolution = None
 
                         movie['info']['resolution'] = namedResolution
-                        movie['info']['sourcemedia'] = self.getSourceMedia(testFile)
+                        if movie['info']['sourcemedia'] == '':
+                	    movie['info']['sourcemedia'] = self.getSourceMedia(testFile)
 
                 # Create filename without cd1/cd2 etc
                 log.debug('removeMultipart')
